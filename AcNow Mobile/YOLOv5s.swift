@@ -14,7 +14,7 @@ class YOLOv5s {
     private let inputWidth: Int = 640
     private let inputHeight: Int = 640
     private let outputVarName: String
-    var confidenceThreshold: Float = 0.30  // Adjustable threshold
+    var confidenceThreshold: Float = 0.50  // Adjustable threshold
     
     // New initializer that accepts a model type
     init?(useStandaloneModel: Bool) {
@@ -64,7 +64,7 @@ class YOLOv5s {
         var outputs: [YOLOv5sOutput] = []
         let gridSize = 80
         let numClasses = 5 // Adjust if your model has a different number of classes
-        let confidenceThreshold: Float = 0.25
+        let confidenceThreshold: Float = 0.30
         
         print("Grid size: \(gridSize), Number of classes: \(numClasses)")
         

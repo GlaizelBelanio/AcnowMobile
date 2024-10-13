@@ -79,7 +79,7 @@ struct ClassifyView: View {
         }
         
         // Set the confidence threshold here
-        yoloModel.confidenceThreshold = 0.3  // Adjust this value as needed
+        //yoloModel.confidenceThreshold = 0.00  // Adjust this value as needed
         
         let results = yoloModel.detect(image: selectedImage)
         self.classificationResults = results
