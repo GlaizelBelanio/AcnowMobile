@@ -240,12 +240,12 @@ struct AboutView: View {
                                         .frame(width: 90, height: 84) // Size of the image
 
                                     VStack{
-                                        Text("Name")
+                                        Text("Glaizel Nicole Belanio")
                                             .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(.white)
                                             .frame(height: 20) // Top Text
                                         
-                                        Text("Role")
+                                        Text("Frontend Developer")
                                             .font(.system(size: 14, weight: .regular))
                                             .foregroundColor(.white)
                                             .frame(height: 20) // Bottom Text
@@ -259,13 +259,14 @@ struct AboutView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 90, height: 84)
+                                        
 
-                                    VStack{Text("Name")
+                                    VStack{Text("       Renz Rey Sario       ")
                                             .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(.white)
                                             .frame(height: 20)
                                         
-                                        Text("Role")
+                                        Text("Project Manager")
                                             .font(.system(size: 14, weight: .regular))
                                             .foregroundColor(.white)
                                             .frame(height: 20)
@@ -280,12 +281,12 @@ struct AboutView: View {
                                         .frame(width: 90, height: 84)
 
                                     VStack{
-                                        Text("Name")
+                                        Text("Claude Janin Ygrubay")
                                             .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(.white)
                                             .frame(height: 20)
                                         
-                                        Text("Role")
+                                        Text("Lead Developer")
                                             .font(.system(size: 14, weight: .regular))
                                             .foregroundColor(.white)
                                             .frame(height: 20)
