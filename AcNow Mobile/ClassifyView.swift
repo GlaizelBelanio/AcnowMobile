@@ -17,37 +17,49 @@ struct ClassifyView: View {
                     .foregroundColor(Color("buttons"))
                 
                 if let processedImage = processedImage {
-                    Image(uiImage: processedImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: geometry.size.width * 0.95, height: geometry.size.height * 0.8)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .shadow(radius: 10)
-                        .padding(.top, -50)
-                    
-                    // Download button
-                    Button(action: {
-                        saveImageToPhotoLibrary(image: processedImage)
-                    }) {
-                        Text("Download")
-                            .frame(width: 207, height: 50)
-                            .background(Color("buttons"))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .font(.system(size: 22, weight: .bold))
-                            .padding(.top,-10)
-                    }
-                    .padding(.top, 20)
-                    .alert(isPresented: $isSavedAlertPresented) {
-                        Alert(title: Text("Image Saved"),
-                              message: Text("The processed image has been saved to your photo library."),
-                              dismissButton: .default(Text("OK")))
+                    VStack {
+                        Image(uiImage: processedImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.6)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .shadow(radius: 10)
+                            .padding(.horizontal, 20)
+                        
+                        // Legend with side margins
+                        HStack(spacing: 15) {
+                            legendItem(color: Color(uiColor: .systemIndigo), label: "Comedone")
+                            legendItem(color: Color(uiColor: .systemCyan), label: "Papule")
+                            legendItem(color: Color(uiColor: .systemYellow), label: "Pustule")
+                            legendItem(color: Color(uiColor: .systemTeal), label: "Nodule")
+                            legendItem(color: Color(uiColor: .systemPurple), label: "Cyst")
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        
+                        // Download button
+                        Button(action: {
+                            saveImageToPhotoLibrary(image: processedImage)
+                        }) {
+                            Text("Download")
+                                .frame(width: 207, height: 50)
+                                .background(Color("buttons"))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .font(.system(size: 22, weight: .bold))
+                                .padding(.top, 10)
+                        }
+                        .padding(.top, 10)
+                        .alert(isPresented: $isSavedAlertPresented) {
+                            Alert(title: Text("Image Saved"),
+                                  message: Text("The processed image has been saved to your photo library."),
+                                  dismissButton: .default(Text("OK")))
+                        }
                     }
                 } else {
                     ProgressView()
-                        .frame(height: geometry.size.height * 0.8)
+                        .frame(height: geometry.size.height * 0.6)
                 }
-                
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.white.edgesIgnoringSafeArea(.all))
@@ -55,6 +67,17 @@ struct ClassifyView: View {
         .navigationTitle("")
         .onAppear {
             classifyImage()
+        }
+    }
+    
+    private func legendItem(color: Color, label: String) -> some View {
+        VStack {
+            Circle()
+                .fill(color)
+                .frame(width: 20, height: 20)
+            Text(label)
+                .foregroundColor(.black)
+                .font(.caption)
         }
     }
     
@@ -78,9 +101,6 @@ struct ClassifyView: View {
             return
         }
         
-        // Set the confidence threshold here
-        //yoloModel.confidenceThreshold = 0.00  // Adjust this value as needed
-        
         let results = yoloModel.detect(image: selectedImage)
         self.classificationResults = results
         
@@ -100,28 +120,39 @@ struct ClassifyView: View {
             let scaleX = image.size.width / 640
             let scaleY = image.size.height / 640
             
-            // Define constants for base box size and font size
             let baseBoxSize: CGFloat = 30  // Base size for the bounding box
             let baseFontSize: CGFloat = 20  // Base font size for the labels
             
             for result in results {
-                // Choose color based on class
                 let color: UIColor
+                let textColor: UIColor
+                
                 switch result.classLabel {
-                    case "comedone": color = .blue
-                    case "papule": color = .green
-                    case "pustule": color = .red
-                    case "nodule": color = .purple
-                    case "cyst": color = .orange
-                    default: color = .yellow
+                    case "comedone":
+                        color = .systemIndigo
+                        textColor = .black
+                    case "papule":
+                        color = .systemCyan
+                        textColor = .black
+                    case "pustule":
+                        color = .systemYellow
+                        textColor = .black
+                    case "nodule":
+                        color = .systemTeal
+                        textColor = .black
+                    case "cyst":
+                        color = .systemPurple
+                        textColor = .black
+                    default:
+                        color = .systemGray
+                        textColor = .black
                 }
+                
                 ctx.setStrokeColor(color.cgColor)
                 
-                // Set dynamic sizes for bounding boxes based on scale
                 let boxWidth = baseBoxSize * min(scaleX, scaleY)
                 let boxHeight = baseBoxSize * min(scaleX, scaleY)
                 
-                // Center the bounding box on the object
                 let centerX = result.boundingBox.midX * scaleX
                 let centerY = result.boundingBox.midY * scaleY
                 
@@ -130,12 +161,11 @@ struct ClassifyView: View {
                 ctx.addRect(rect)
                 ctx.strokePath()
                 
-                // Draw a label for each box with dynamic sizing
-                let dynamicFontSize = baseFontSize * min(scaleX, scaleY) // Scale font size
+                let dynamicFontSize = baseFontSize * min(scaleX, scaleY)
                 let label = "\(result.classLabel) (\(String(format: "%.2f", result.confidence)))"
                 let attributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.boldSystemFont(ofSize: dynamicFontSize),
-                    .foregroundColor: UIColor.white
+                    .foregroundColor: textColor
                 ]
                 
                 let size = label.size(withAttributes: attributes)
@@ -150,7 +180,6 @@ struct ClassifyView: View {
         
         return processedImage
     }
-
     
     private func saveImageToPhotoLibrary(image: UIImage) {
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
