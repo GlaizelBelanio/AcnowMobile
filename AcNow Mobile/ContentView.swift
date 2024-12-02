@@ -72,9 +72,11 @@ struct CaptureView: View {
                     Image(uiImage: selectedImage)
                         .resizable()
                         .scaledToFit()
+                        .cornerRadius(5)
+                        .shadow(radius: 10)
                         .padding(10)
                         .frame(width: 310, height: 400)
-                        .cornerRadius(10)
+                       
 
                     // "X" button to remove the image
                     Button(action: {

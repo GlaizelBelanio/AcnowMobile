@@ -20,9 +20,9 @@ struct ClassifyView: View {
                     VStack {
                         Image(uiImage: processedImage)
                             .resizable()
+                            .cornerRadius(5)
                             .aspectRatio(contentMode: .fit)
                             .frame(width: geometry.size.width * 0.9, height: geometry.size.height * 0.6)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
                             .shadow(radius: 10)
                             .padding(.horizontal, 20)
                         
