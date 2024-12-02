@@ -6,6 +6,7 @@ struct ClassifyView: View {
     @State private var processedImage: UIImage?
     var selectedModel: String?  // Pass the selected model
     @State private var isSavedAlertPresented: Bool = false // To show an alert after saving
+    @State private var boundingBoxScale: CGFloat = 1.0  // Scale for bounding boxes and labels
 
     var body: some View {
         GeometryReader { geometry in
@@ -35,6 +36,14 @@ struct ClassifyView: View {
                             legendItem(color: Color(uiColor: .systemPurple), label: "Cyst")
                         }
                         .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        
+                        // Slider to adjust bounding box size
+                        VStack {
+                            Text("Bounding Box Size")
+                            Slider(value: $boundingBoxScale, in: 0.5...2.0, step: 0.1)
+                                .padding(.horizontal, 20)
+                        }
                         .padding(.top, 10)
                         
                         // Download button
@@ -67,6 +76,9 @@ struct ClassifyView: View {
         .navigationTitle("")
         .onAppear {
             classifyImage()
+        }
+        .onChange(of: boundingBoxScale) { _ in
+            classifyImage()  // Re-classify when the slider value changes
         }
     }
     
@@ -150,8 +162,8 @@ struct ClassifyView: View {
                 
                 ctx.setStrokeColor(color.cgColor)
                 
-                let boxWidth = baseBoxSize * min(scaleX, scaleY)
-                let boxHeight = baseBoxSize * min(scaleX, scaleY)
+                let boxWidth = baseBoxSize * min(scaleX, scaleY) * boundingBoxScale
+                let boxHeight = baseBoxSize * min(scaleX, scaleY) * boundingBoxScale
                 
                 let centerX = result.boundingBox.midX * scaleX
                 let centerY = result.boundingBox.midY * scaleY
@@ -161,7 +173,7 @@ struct ClassifyView: View {
                 ctx.addRect(rect)
                 ctx.strokePath()
                 
-                let dynamicFontSize = baseFontSize * min(scaleX, scaleY)
+                let dynamicFontSize = baseFontSize * min(scaleX, scaleY) * boundingBoxScale
                 let label = "\(result.classLabel) (\(String(format: "%.2f", result.confidence)))"
                 let attributes: [NSAttributedString.Key: Any] = [
                     .font: UIFont.boldSystemFont(ofSize: dynamicFontSize),
