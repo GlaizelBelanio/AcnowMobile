@@ -199,14 +199,14 @@ struct AboutView: View {
                                 .font(.system(size: 28, weight: .bold))
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
-                                .padding(.top, -50) // Consistent space above title
+                                .padding(.top, -30) // Consistent space above title
                                 .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 4) // Shadow effect
                                 .opacity(1)
 
                             Text(aboutText1)
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundColor(.white)
-                                .multilineTextAlignment(.center)
+                                .multilineTextAlignment(.leading)
                                 .padding(.top, 10) // Padding around the text for consistency
                                 .frame(maxWidth: 262) // Constrain the width
                                 .lineSpacing(5)
@@ -240,6 +240,7 @@ struct AboutView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 90, height: 84) // Size of the image
+                                        
 
                                     VStack{
                                         Text("Glaizel Nicole Belanio")
@@ -315,12 +316,29 @@ struct AboutView: View {
             }
             .padding(.top, 550) // Adjust this value to position the dots above the bottom of the rectangle
         }
-        .padding(.top, -90)
+        .padding(.top, -50)
     }
 
     private var aboutText1: String {
         """
-        AcNow Mobile is designed to help users identify and understand their acne better. By using advanced AI technology, the app provides accurate and reliable classification of various types of acne, including whiteheads, blackheads, papules, pustules, nodules, and cysts. This makes it easier for users to manage their skin health by making more informed decisions and employing suitable self-treatments. AcNow Mobile aims to improve access to effective acne care, empowering users to take control of their skin health with confidence.
+        AcNow   Mobile  is   designed  to   help 
+        users   identify   and  understand  their 
+        acne better,offering guidance through 
+        advanced AI-powered classification of 
+        various    acne   types,   including white
+        -heads,           blackheads,        papules, 
+        pustules,    nodules,    and    cysts.   By 
+        leveraging the enhanced accuracy and 
+        balanced         detection         of         the 
+        YOLOv5+CBAM     model,     the       app 
+        minimizes      false     positives       while 
+        providing    reliable   insights  to  assist 
+        users  in  managing   their  skin  health. 
+        However,  it  is  important  to  note that 
+        AcNow    Mobile     is    solely     a    tool 
+        for     guidance    and   cannot   replace 
+        professional consultations with a 
+        dermatologist.
         """
     }
 }

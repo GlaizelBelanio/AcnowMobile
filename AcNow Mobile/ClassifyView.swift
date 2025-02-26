@@ -40,9 +40,11 @@ struct ClassifyView: View {
                         
                         // Slider to adjust bounding box size
                         VStack {
-                            Text("Bounding Box Size")
+                            Text("Bounding Box and Confidence Level Size Adjuster")
                             Slider(value: $boundingBoxScale, in: 0.5...2.0, step: 0.1)
+                                .font(.system(size: 10, weight: .bold))
                                 .padding(.horizontal, 20)
+                               
                         }
                         .padding(.top, 10)
                         
@@ -142,19 +144,19 @@ struct ClassifyView: View {
                 switch result.classLabel {
                     case "comedone":
                         color = .systemIndigo
-                        textColor = .black
+                        textColor = .white
                     case "papule":
-                        color = .systemCyan
-                        textColor = .black
+                    color = .systemBlue
+                        textColor = .white
                     case "pustule":
                         color = .systemYellow
                         textColor = .black
                     case "nodule":
                         color = .systemTeal
-                        textColor = .black
+                        textColor = .white
                     case "cyst":
                         color = .systemPurple
-                        textColor = .black
+                        textColor = .white
                     default:
                         color = .systemGray
                         textColor = .black
